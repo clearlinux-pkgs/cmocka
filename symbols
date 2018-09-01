@@ -39,6 +39,7 @@ libcmocka.so.0:_test_realloc
 libcmocka.so.0:_will_return
 libcmocka.so.0:cm_print_error
 libcmocka.so.0:cmocka_set_message_output
+libcmocka.so.0:cmocka_set_test_filter
 libcmocka.so.0:mock_assert
 libcmocka.so.0:print_error
 libcmocka.so.0:print_message
