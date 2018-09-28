@@ -5,14 +5,14 @@
 # Source0 file verified with key 0x7EE0FC4DCC014E3D (asn@samba.org)
 #
 Name     : cmocka
-Version  : 1.1.2
-Release  : 5
-URL      : https://cmocka.org/files/1.1/cmocka-1.1.2.tar.xz
-Source0  : https://cmocka.org/files/1.1/cmocka-1.1.2.tar.xz
-Source99 : https://cmocka.org/files/1.1/cmocka-1.1.2.tar.xz.asc
+Version  : 1.1.3
+Release  : 6
+URL      : https://cmocka.org/files/1.1/cmocka-1.1.3.tar.xz
+Source0  : https://cmocka.org/files/1.1/cmocka-1.1.3.tar.xz
+Source99 : https://cmocka.org/files/1.1/cmocka-1.1.3.tar.xz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
-License  : Apache-2.0 BSD-3-Clause
+License  : Apache-2.0 BSD-3-Clause MIT
 Requires: cmocka-lib
 Requires: cmocka-license
 BuildRequires : buildreq-cmake
@@ -28,8 +28,8 @@ can load this modeling file in the Coverity web interface.
 %package dev
 Summary: dev components for the cmocka package.
 Group: Development
-Requires: cmocka-lib
-Provides: cmocka-devel
+Requires: cmocka-lib = %{version}-%{release}
+Provides: cmocka-devel = %{version}-%{release}
 
 %description dev
 dev components for the cmocka package.
@@ -38,7 +38,7 @@ dev components for the cmocka package.
 %package lib
 Summary: lib components for the cmocka package.
 Group: Libraries
-Requires: cmocka-license
+Requires: cmocka-license = %{version}-%{release}
 
 %description lib
 lib components for the cmocka package.
@@ -53,26 +53,27 @@ license components for the cmocka package.
 
 
 %prep
-%setup -q -n cmocka-1.1.2
+%setup -q -n cmocka-1.1.3
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1535838781
-mkdir clr-build
+export SOURCE_DATE_EPOCH=1538146188
+mkdir -p clr-build
 pushd clr-build
 %cmake ..
 make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1535838781
+export SOURCE_DATE_EPOCH=1538146188
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/doc/cmocka
 cp COPYING %{buildroot}/usr/share/doc/cmocka/COPYING
 cp cmake/Modules/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/doc/cmocka/cmake_Modules_COPYING-CMAKE-SCRIPTS
+cp doc/that_style/LICENSE %{buildroot}/usr/share/doc/cmocka/doc_that_style_LICENSE
 pushd clr-build
 %make_install
 popd
@@ -91,9 +92,10 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libcmocka.so.0
-/usr/lib64/libcmocka.so.0.5.0
+/usr/lib64/libcmocka.so.0.5.1
 
 %files license
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 /usr/share/doc/cmocka/COPYING
 /usr/share/doc/cmocka/cmake_Modules_COPYING-CMAKE-SCRIPTS
+/usr/share/doc/cmocka/doc_that_style_LICENSE
