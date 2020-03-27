@@ -6,7 +6,7 @@
 #
 Name     : cmocka
 Version  : 1.1.5
-Release  : 7
+Release  : 8
 URL      : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
 Source0  : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
 Source99 : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz.asc
