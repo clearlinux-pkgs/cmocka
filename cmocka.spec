@@ -6,11 +6,11 @@
 #
 Name     : cmocka
 Version  : 1.1.5
-Release  : 8
+Release  : 9
 URL      : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
 Source0  : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
-Source99 : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz.asc
-Summary  : Elegant unit testing framework for C with support for mock objects
+Source1  : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz.asc
+Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause MIT
 Requires: cmocka-lib = %{version}-%{release}
@@ -55,26 +55,32 @@ license components for the cmocka package.
 
 %prep
 %setup -q -n cmocka-1.1.5
+cd %{_builddir}/cmocka-1.1.5
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1555166313
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604538434
 mkdir -p clr-build
 pushd clr-build
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake ..
 make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1555166313
+export SOURCE_DATE_EPOCH=1604538434
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/cmocka
-cp COPYING %{buildroot}/usr/share/package-licenses/cmocka/COPYING
-cp cmake/Modules/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/cmocka/cmake_Modules_COPYING-CMAKE-SCRIPTS
-cp doc/that_style/LICENSE %{buildroot}/usr/share/package-licenses/cmocka/doc_that_style_LICENSE
+cp %{_builddir}/cmocka-1.1.5/COPYING %{buildroot}/usr/share/package-licenses/cmocka/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+cp %{_builddir}/cmocka-1.1.5/cmake/Modules/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/cmocka/ff3ed70db4739b3c6747c7f624fe2bad70802987
+cp %{_builddir}/cmocka-1.1.5/doc/that_style/LICENSE %{buildroot}/usr/share/package-licenses/cmocka/86b52f0f7e15225010495c0b221b79ef0dc1a90d
 pushd clr-build
 %make_install
 popd
@@ -84,7 +90,8 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/cmocka.h
+/usr/include/cmocka_pbc.h
 /usr/lib64/cmake/cmocka/cmocka-config-version.cmake
 /usr/lib64/cmake/cmocka/cmocka-config.cmake
 /usr/lib64/libcmocka.so
@@ -97,6 +104,6 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/cmocka/COPYING
-/usr/share/package-licenses/cmocka/cmake_Modules_COPYING-CMAKE-SCRIPTS
-/usr/share/package-licenses/cmocka/doc_that_style_LICENSE
+/usr/share/package-licenses/cmocka/2b8b815229aa8a61e483fb4ba0588b8b6c491890
+/usr/share/package-licenses/cmocka/86b52f0f7e15225010495c0b221b79ef0dc1a90d
+/usr/share/package-licenses/cmocka/ff3ed70db4739b3c6747c7f624fe2bad70802987
