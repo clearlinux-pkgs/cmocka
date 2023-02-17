@@ -5,19 +5,23 @@
 # Source0 file verified with key 0x7EE0FC4DCC014E3D (asn@samba.org)
 #
 Name     : cmocka
-Version  : 1.1.5
-Release  : 9
-URL      : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
-Source0  : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
-Source1  : https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz.asc
+Version  : 1.1.6
+Release  : 10
+URL      : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz
+Source0  : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz
+Source1  : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause MIT
 Requires: cmocka-lib = %{version}-%{release}
 Requires: cmocka-license = %{version}-%{release}
 BuildRequires : buildreq-cmake
+BuildRequires : buildreq-meson
 BuildRequires : doxygen
 BuildRequires : git
+# Suppress stripping binaries
+%define __strip /bin/true
+%define debug_package %{nil}
 
 %description
 coverity_assert_model.c:
@@ -54,33 +58,33 @@ license components for the cmocka package.
 
 
 %prep
-%setup -q -n cmocka-1.1.5
-cd %{_builddir}/cmocka-1.1.5
+%setup -q -n cmocka-1.1.6
+cd %{_builddir}/cmocka-1.1.6
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604538434
+export SOURCE_DATE_EPOCH=1676651446
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$FFLAGS -fno-lto "
-export FFLAGS="$FFLAGS -fno-lto "
-export CXXFLAGS="$CXXFLAGS -fno-lto "
+export CFLAGS="$CFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FCFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export FFLAGS="$FFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CXXFLAGS="$CXXFLAGS -fdebug-types-section -femit-struct-debug-baseonly -fno-lto -g1 -gno-column-info -gno-variable-location-views -gz "
 %cmake ..
 make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1604538434
+export SOURCE_DATE_EPOCH=1676651446
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/cmocka
-cp %{_builddir}/cmocka-1.1.5/COPYING %{buildroot}/usr/share/package-licenses/cmocka/2b8b815229aa8a61e483fb4ba0588b8b6c491890
-cp %{_builddir}/cmocka-1.1.5/cmake/Modules/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/cmocka/ff3ed70db4739b3c6747c7f624fe2bad70802987
-cp %{_builddir}/cmocka-1.1.5/doc/that_style/LICENSE %{buildroot}/usr/share/package-licenses/cmocka/86b52f0f7e15225010495c0b221b79ef0dc1a90d
+cp %{_builddir}/cmocka-%{version}/COPYING %{buildroot}/usr/share/package-licenses/cmocka/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
+cp %{_builddir}/cmocka-%{version}/cmake/Modules/COPYING-CMAKE-SCRIPTS %{buildroot}/usr/share/package-licenses/cmocka/ff3ed70db4739b3c6747c7f624fe2bad70802987 || :
+cp %{_builddir}/cmocka-%{version}/doc/that_style/LICENSE %{buildroot}/usr/share/package-licenses/cmocka/86b52f0f7e15225010495c0b221b79ef0dc1a90d || :
 pushd clr-build
 %make_install
 popd
@@ -92,6 +96,7 @@ popd
 %defattr(-,root,root,-)
 /usr/include/cmocka.h
 /usr/include/cmocka_pbc.h
+/usr/lib64/cmake/cmocka/cmocka-config-relwithdebinfo.cmake
 /usr/lib64/cmake/cmocka/cmocka-config-version.cmake
 /usr/lib64/cmake/cmocka/cmocka-config.cmake
 /usr/lib64/libcmocka.so
@@ -100,7 +105,7 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libcmocka.so.0
-/usr/lib64/libcmocka.so.0.7.0
+/usr/lib64/libcmocka.so.0.8.0
 
 %files license
 %defattr(0644,root,root,0755)
