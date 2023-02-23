@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x7EE0FC4DCC014E3D (asn@samba.org)
 #
 Name     : cmocka
-Version  : 1.1.6
-Release  : 10
-URL      : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz
-Source0  : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz
-Source1  : https://cmocka.org/files/1.1/cmocka-1.1.6.tar.xz.asc
+Version  : 1.1.7
+Release  : 11
+URL      : https://cmocka.org/files/1.1/cmocka-1.1.7.tar.xz
+Source0  : https://cmocka.org/files/1.1/cmocka-1.1.7.tar.xz
+Source1  : https://cmocka.org/files/1.1/cmocka-1.1.7.tar.xz.asc
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause MIT
@@ -58,15 +58,15 @@ license components for the cmocka package.
 
 
 %prep
-%setup -q -n cmocka-1.1.6
-cd %{_builddir}/cmocka-1.1.6
+%setup -q -n cmocka-1.1.7
+cd %{_builddir}/cmocka-1.1.7
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1676651446
+export SOURCE_DATE_EPOCH=1677180716
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -79,7 +79,7 @@ make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1676651446
+export SOURCE_DATE_EPOCH=1677180716
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/cmocka
 cp %{_builddir}/cmocka-%{version}/COPYING %{buildroot}/usr/share/package-licenses/cmocka/2b8b815229aa8a61e483fb4ba0588b8b6c491890 || :
